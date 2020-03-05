@@ -17,7 +17,7 @@ namespace CRUD_Operations
         public List<Product> GetProducts()
         {
             //This method should be able to select fields from your MySql server and display them. 
-            MySqlConnection conn = new MySqlConnection(connString);
+            var conn = new MySqlConnection(connString);
             List<Product> products = new List<Product>();
 
             using (conn)
@@ -47,7 +47,7 @@ namespace CRUD_Operations
         {
             //This method should be able to insert fields into your MySQL server.
             //Note, if you want to see changes you will need to run GetProducts(); again.
-            MySqlConnection conn = new MySqlConnection(connString);
+            var conn = new MySqlConnection(connString);
 
             using (conn)
             {
@@ -59,6 +59,51 @@ namespace CRUD_Operations
                 cmd.Parameters.AddWithValue("p", prod.Price);
                 cmd.Parameters.AddWithValue("cID", prod.CategoryID);
                 cmd.Parameters.AddWithValue("sale", prod.OnSale);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void DeleteProductByID(int id)
+        {
+            //This method should be able to delete an entry by grabbing the Product ID
+            //Note, if you want to see changes you will need to run GetProducts(); again.
+            var conn = new MySqlConnection(connString);
+
+            using (conn)
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM products WHERE ProductID = !id;";
+                cmd.Parameters.AddWithValue("id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void DeleteProductByName(string name)
+        {
+            //This method should be able to delete an entry by grabbing the Name
+            //Note, if you want to see changes you will need to run GetProducts(); again.
+            var conn = new MySqlConnection(connString);
+
+            using (conn)
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM products WHERE Name = @name;";
+                cmd.Parameters.AddWithValue("name", name);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void DeleteProduct(int id, string name)
+        {
+            //This method should be able to delete an entry by grabbing the Product ID
+            //Note, if you want to see changes you will need to run GetProducts(); again.
+            var conn = new MySqlConnection(connString);
+
+            using (conn)
+            {
+                conn.Open();
+                var cmd = conn.CreateCommand();
+                cmd.CommandText = "DELETE FROM products WHERE Name = @name AND ProductID = !id;";
+                cmd.Parameters.AddWithValue("id", id);
                 cmd.ExecuteNonQuery();
             }
         }
